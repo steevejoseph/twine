@@ -1,0 +1,86 @@
+% preamble
+\documentclass[twoside]{report}
+
+% importing packagess
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage{graphicx}
+\graphicspath{{images/}}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+% \usepackage[top=1in, bottom=1in, bindingoffset=1.5in]{geometry}
+\usepackage[a4paper,width=150mm,top=25mm,bottom=25mm, bindingoffset=6mm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{blindtext}
+
+\usepackage{hyperref}
+
+\newcommand{\serviceName}{Twine }
+
+
+% \usepackage{hyperref}
+% what does this do?
+\pagestyle{fancy}
+
+
+% clear out heading settings
+\fancyhead{}
+
+% on the Right side of Odd pages, put PDD
+% on the Left side of Even pages, put PDD
+\fancyhead[RO, LE]{\serviceName Design Document}
+
+\fancyfoot{}
+\fancyfoot[LE, RO]{\thepage}
+\fancyfoot[LO, CE]{Chapter \thechapter}
+\fancyfoot[CO, RE]{Steeve Joseph}
+
+
+
+
+% end preamble
+
+\title{\serviceName\ Software Design Document}
+\author{Steeve Joseph}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\listoffigures
+\listoftables
+
+
+% importing Introduction.tex's content to be the content of the chapter
+\chapter{Introduction}
+\input{chapters/1-Introduction.tex}
+
+\chapter{System Overview}
+\input{chapters/2-SystemOverview.tex}
+
+\chapter{System Architecture}
+\input{chapters/3-SystemArchitecture.tex}
+
+\chapter{Data Design}
+\input{chapters/4-DataDesign.tex}
+
+\chapter{Component Design}
+\input{chapters/5-ComponentDesign.tex}
+
+\chapter{User Interface Design}
+\input{chapters/6-UserInterfaceDesign.tex}
+
+\chapter{Requirements}
+\input{chapters/7-Requirements.tex}
+
+\chapter{Milestones}
+\input{chapters/8-Milestones.tex}
+
+\chapter{Testing}
+\input{chapters/9-Testing.tex}
+
+
+\end{document}

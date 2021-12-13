@@ -1,0 +1,40 @@
+\section{API}
+\subsection{Backend Language}
+ExpressJS was chosen to be the backend language of choice for \serviceName. 
+Advantages:
+\begin{itemize}
+    \item written in JS
+    \item simple, flexible, extensible
+    \item "One language to rule them all"
+\end{itemize}
+
+\subsection{Authentication}
+PassportjS will be used for Authentication.
+
+\subsection{Routes}
+At the very least, the necessary routes are:
+\begin{itemize}
+    \item Login: Allows users to register/log in
+    \item Add content: Allows friend to upload content on user's behalf and (potentially) allows user to upload their own content
+    \item Add friend: Allows a user to add a friend, meaning that the friend will be able to post content on the user's behalf
+    \item Make Recommendation: Allows a friend to make a recommendation on behalf of the user
+\end{itemize}
+
+
+\subsection{External APIs/Libraries}
+Notable APIs that will be used server-side include:
+\begin{itemize}
+    \item Imgur API: used to handle uploading of images, videos, audio
+    \item Nodemailer: Used to send emails to users
+    \item PeerJS: used to establish video/audio calls
+\end{itemize}
+
+
+\section{User Interface}
+ReactJS will be used as the UI framework \serviceName will primarily be web-based. 
+Advantages
+\begin{itemize}
+    \item Large community support
+    \item Flexible and extentsible
+    \item Allows for rapid development/iteration
+\end{itemize}
