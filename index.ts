@@ -8,12 +8,7 @@ import mongoose from "mongoose";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
-const { MONGO_ATLAS_USER, MONGO_ATLAS_PASS } = process.env;
-
-mongoose.connect(
-  `mongodb+srv://${MONGO_ATLAS_USER}:${MONGO_ATLAS_PASS}@cluster0.wdzws.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
-);
+mongoose.connect(`${process.env.MONGO_ATLAS_URL}`);
 
 mongoose.connection.on("open", (ref) =>
   console.log("Connected to mongo server.")

@@ -1,6 +1,6 @@
 import { Request, RequestHandler as Middleware, Response } from "express";
 
-export type User = { username: string; password: string };
+export type User = { email: string; password: string; name: string };
 
 type Method =
   | "get"

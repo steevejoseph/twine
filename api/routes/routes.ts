@@ -1,5 +1,6 @@
 import { home } from "../controllers/index";
-import { Route } from "../../types";
+import { addUser } from "../controllers/users";
+import { Route } from "../types";
 
 export const routes: Route[] = [
   {
@@ -7,5 +8,11 @@ export const routes: Route[] = [
     path: "/",
     middleware: [],
     handler: home,
+  },
+  {
+    method: "post",
+    path: "/users/new",
+    middleware: [],
+    handler: addUser,
   },
 ];
