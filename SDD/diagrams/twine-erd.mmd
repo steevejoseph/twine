@@ -1,0 +1,17 @@
+erDiagram
+    USER ||--o{ POST : has
+    USER {
+        string name
+        string id
+        string birthday
+        string location
+        Array_user friends
+    }
+    POST {
+        string contentType
+        string caption
+        string url
+        User poster
+        User onWall
+    }
+    USER ||--|{ FRIEND: has
