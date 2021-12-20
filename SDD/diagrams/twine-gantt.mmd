@@ -1,0 +1,38 @@
+gantt
+    dateFormat  YYYY-MM-DD
+    title       GANTT for Twine
+    excludes    weekends
+    %% (`excludes` accepts specific dates in YYYY-MM-DD format, days of the week ("sunday") or "weekends", but not the word "weekdays".)
+
+    section Design
+    %% Completed task            :done,    des1, 2014-01-06,2014-01-08
+    Setup autoformat for vscode :active, des2, 2021-12-13, 48h
+    Finish intro & system overview              :active, des2, 2021-12-13, 1w
+    Write out requirements                      :active, des2, 2021-12-13, 1w
+    Write API design                :         des3, after des2, 1w
+    Write out UI design             :         des4, after des3, 1w
+
+    section API Tasks
+    Implement login/signup for API :crit, active, 2021-12-20,48h
+    Email user on signup          :crit, done, after des1, 2d
+    Create tests for parser             :crit, active, 3d
+    Future task in critical line        :crit, 5d
+    Create tests for renderer           :2d
+    Add to mermaid                      :1d
+    Initial functionality                 :milestone, 2022-01-15, 0d
+
+
+    section UI
+    Make login/signup page              :crit, active, 2021-12-20,48h
+    Make login/signup page              :crit, active, 2021-12-20,48h
+    Make login/signup page              :crit, active, 2021-12-20,48h
+
+    section Documentation
+    %%Describe gantt syntax               :active, a1, after des1, 3d
+    %%Add gantt diagram to demo page      :after a1  , 20h
+    %%Add another diagram to demo page    :doc1, after a1  , 48h
+
+    section Testing
+    %%Describe gantt syntax               :after doc1, 3d
+    %%Add gantt diagram to demo page      :20h
+    %%Add another diagram to demo page    :48h
