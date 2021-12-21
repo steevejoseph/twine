@@ -29,10 +29,8 @@ export const login: RequestHandler = async (req, res, next) => {
       req.login(user, { session: false }, async (error) => {
         if (error) return next(error);
 
-        const body = { _id: user._id, email: user.email };
         const JWT_SECRET = process.env.JWT_SECRET as string;
-        const token = jwt.sign({ user: body }, JWT_SECRET);
-
+        const token = jwt.sign({ user }, JWT_SECRET);
         return res.json({ token });
       });
     } catch (error) {
