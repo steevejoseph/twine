@@ -1,16 +1,19 @@
 import mongoose from 'mongoose';
-import { Handler, User } from '../types';
-
+import { model as userModel } from '../models/user';
+import { RequestHandler } from 'express';
 mongoose.connect(`${process.env.MONGO_ATLAS_URL}`);
 
 /* GET users listing. */
-export const getUsers: Handler = (req, res) => {
-  res.send('respond with a resource');
+export const getUsers: RequestHandler = (req, res) => {
+  userModel.find({}, (err, users) => {
+    if (err) {
+      res.status(500).json(err);
+    }
+
+    res.status(200).json(users);
+  });
 };
 
-export const addUser: Handler = (req, res) => {
-  const { email, password, name } = req.body;
-  const userJS: User = { email, password, name };
-  console.log(req.body);
+export const signup: RequestHandler = (req, res) => {
   res.status(200).send();
 };
