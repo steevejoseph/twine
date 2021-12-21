@@ -6,7 +6,14 @@ import { userModel as userModel } from '../models/user';
 
 mongoose.connect(`${process.env.MONGO_ATLAS_URL}`);
 
-/* GET users listing. */
+/**
+ * Gets the list of users in the DB (debug use)
+ * @param req the request body
+ * @param res the response body
+ * @param next the next middleware to run after logging in
+ * @returns 200 with the token on success
+ * @exception error logging in
+ */
 export const getUsers: RequestHandler = (req, res) => {
   userModel.find({}, (err, users) => {
     if (err) {
@@ -17,6 +24,14 @@ export const getUsers: RequestHandler = (req, res) => {
   });
 };
 
+/**
+ * Logs the user into the API using PassportJS
+ * @param req the request body
+ * @param res the response body
+ * @param next the next middleware to run after logging in
+ * @returns 200 with the token on success
+ * @exception error logging in
+ */
 export const login: RequestHandler = async (req, res, next) => {
   passport.authenticate('login', async (err, user) => {
     try {

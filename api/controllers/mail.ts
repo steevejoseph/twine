@@ -14,6 +14,12 @@ const transporter = nodemailer.createTransport({
   pool: true,
 });
 
+/**
+ * Sends a welcome email to a user that has just joined
+ * @param req request object
+ * @param res response object
+ * @param next next middleware to run after email is sent
+ */
 export const sendIntroEmailToUser: RequestHandler = (req, res, next) => {
   const user: IUser = req.user as IUser;
   const mailOptions = {
@@ -37,10 +43,19 @@ export const sendIntroEmailToUser: RequestHandler = (req, res, next) => {
   next();
 };
 
-export const sendEmailToReflectors = (
-  referee: string,
-  referrers: [string, string, string],
-) => {
+/**
+ * Utility function for sending out emails when a reflection/referral is requested
+ * @param referee the person asking for relflections
+ * @param referrers the person granting the request
+ * @returns an array of sent message info that describes the outcome of each email transmission
+ */
+export const sendEmailToReflectors = (referee: string, referrers: string[]) => {
+  if (referrers.length < 1) {
+    throw new Error('At least 1 reflector must be specified');
+  } else if (referrers.length > 3) {
+    throw new Error('No more than 3 reflectors can be specified at this time');
+  }
+
   const emails = referrers.map((r) => {
     return {
       from: '"Your Feedback Requested" <twinedapp@gmail.com>',
@@ -57,13 +72,18 @@ export const sendEmailToReflectors = (
   return Promise.all(promises);
 };
 
+/**
+ * Sends email to list of reflectors
+ * @param req the request object that contains the token that contains the requestor info
+ * @param res the response body
+ */
 export const requestReflections: RequestHandler = (req, res) => {
   const token = req.headers.authorization?.split(' ')[1] as string;
   const json = jwt.decode(token) as JwtPayload;
   const user: IUser = json.user;
 
   const { reflectors } = req.body;
-  sendEmailToReflectors(user.email, reflectors).then((response) =>
-    res.status(204).json({ response }),
-  );
+  sendEmailToReflectors(user.email, reflectors)
+    .then((response) => res.status(204).json({ response }))
+    .catch((err) => res.status(500).send(err));
 };

@@ -23,6 +23,9 @@ export const UserSchema = new mongoose.Schema(
   { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } },
 );
 
+/**
+ * Hashes password before saving it in db
+ */
 UserSchema.pre('save', async function (next) {
   const user = this;
   const hash = await bcrypt.hash(user.password, 10);
@@ -30,6 +33,10 @@ UserSchema.pre('save', async function (next) {
   next();
 });
 
+/* Compares supplied password to hashed password in db
+ * @param password plaintext password
+ * @returns hashed password
+ */
 UserSchema.methods.isValidPassword = async function (password) {
   const user = this;
   const compare = await bcrypt.compare(password, user.password);
