@@ -5,6 +5,7 @@ import path from 'path';
 import logger from 'morgan';
 import mongoose from 'mongoose';
 import router from './api/routes';
+import passport from 'passport';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,6 +18,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(passport.initialize());
+require('./api/middleware/auth');
+
+// TODO: Reenable passport sessions
+// app.use(passport.session());
 
 /* GET home page. */
 router.get('/', (req, res) => {

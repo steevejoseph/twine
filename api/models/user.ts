@@ -1,15 +1,16 @@
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
 export interface IUser extends mongoose.Document {
   name: string;
-  username: string;
+  email: string;
   password: string;
+  isValidPassword(candidate: string): boolean;
 }
 
-export const schema = new mongoose.Schema(
+export const UserSchema = new mongoose.Schema(
   {
-    name: String,
-    username: {
+    email: {
       type: String,
       required: true,
       unique: true,
@@ -22,8 +23,22 @@ export const schema = new mongoose.Schema(
   { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } },
 );
 
-export const model = mongoose.model<IUser>('User', schema);
+UserSchema.pre('save', async function (next) {
+  const user = this;
+  const hash = await bcrypt.hash(user.password, 10);
+  user.password = hash;
+  next();
+});
 
-export const cleanCollection = () => model.remove({}).exec();
+UserSchema.methods.isValidPassword = async function (password) {
+  const user = this;
+  const compare = await bcrypt.compare(password, user.password);
 
-export default model;
+  return compare;
+};
+
+export const userModel = mongoose.model<IUser>('User', UserSchema);
+
+export const cleanCollection = () => userModel.remove({}).exec();
+
+export default userModel;
