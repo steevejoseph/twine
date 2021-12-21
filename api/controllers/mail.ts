@@ -37,7 +37,7 @@ export const sendIntroEmailToUser: RequestHandler = (req, res, next) => {
   next();
 };
 
-export const sendEmailToReferrers = (
+export const sendEmailToReflectors = (
   referee: string,
   referrers: [string, string, string],
 ) => {
@@ -53,19 +53,17 @@ export const sendEmailToReferrers = (
     };
   });
 
-  console.log(emails);
-  const promises = emails.map((e) =>
-    transporter.sendMail(e).then((f) => console.log(f)),
-  );
-  Promise.all(promises);
+  const promises = emails.map((e) => transporter.sendMail(e));
+  return Promise.all(promises);
 };
 
-export const requestReferrals: RequestHandler = (req, res, next) => {
+export const requestReflections: RequestHandler = (req, res) => {
   const token = req.headers.authorization?.split(' ')[1] as string;
   const json = jwt.decode(token) as JwtPayload;
   const user: IUser = json.user;
 
-  const { referrers } = req.body;
-  sendEmailToReferrers(user.email, referrers);
-  next();
+  const { reflectors } = req.body;
+  sendEmailToReflectors(user.email, reflectors).then((response) =>
+    res.status(204).json({ response }),
+  );
 };

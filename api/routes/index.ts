@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import passport from 'passport';
 import userRouter from './users';
+import reflectionsRouter from './reflections';
 import { login } from '../controllers/users';
-import { requestReferrals, sendIntroEmailToUser } from '../middleware/mail';
+import { sendIntroEmailToUser } from '../controllers/mail';
 
 const router = Router();
 
@@ -17,12 +18,13 @@ router.post(
 );
 
 router.post('/login', login);
-router.post('/refs', requestReferrals);
 
 router.use(
   '/users',
   passport.authenticate('jwt', { session: false }),
   userRouter,
 );
+
+router.use('/reflections', reflectionsRouter);
 
 export default router;
