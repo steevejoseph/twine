@@ -1,10 +1,12 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import { IReflection } from './reflection';
 
 export interface IUser extends mongoose.Document {
   name: string;
   email: string;
   password: string;
+  reflections: IReflection[];
   isValidPassword(candidate: string): boolean;
 }
 
@@ -44,8 +46,8 @@ UserSchema.methods.isValidPassword = async function (password) {
   return compare;
 };
 
-export const userModel = mongoose.model<IUser>('User', UserSchema);
+export const User = mongoose.model<IUser>('User', UserSchema);
 
-export const cleanCollection = () => userModel.remove({}).exec();
+export const cleanCollection = () => User.remove({}).exec();
 
-export default userModel;
+export default User;

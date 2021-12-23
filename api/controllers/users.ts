@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import { RequestHandler } from 'express';
-import { userModel as userModel } from '../models/user';
+import { User } from '../models/user';
 
 mongoose.connect(`${process.env.MONGO_ATLAS_URL}`);
 
@@ -15,7 +15,7 @@ mongoose.connect(`${process.env.MONGO_ATLAS_URL}`);
  * @exception error logging in
  */
 export const getUsers: RequestHandler = (req, res) => {
-  userModel.find({}, (err, users) => {
+  User.find({}, (err, users) => {
     if (err) {
       res.status(500).json(err);
     }
