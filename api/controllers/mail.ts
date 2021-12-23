@@ -45,24 +45,27 @@ export const sendIntroEmailToUser: RequestHandler = (req, res, next) => {
 
 /**
  * Utility function for sending out emails when a reflection/referral is requested
- * @param referee the person asking for relflections
- * @param referrers the person granting the request
+ * @param reflectee the person asking for relflections
+ * @param reflectors the person granting the request
  * @returns an array of sent message info that describes the outcome of each email transmission
  */
-export const sendEmailToReflectors = (referee: string, referrers: string[]) => {
-  if (referrers.length < 1) {
+export const sendEmailToReflectors = (
+  reflectee: string,
+  reflectors: string[],
+) => {
+  if (reflectors.length < 1) {
     throw new Error('At least 1 reflector must be specified');
-  } else if (referrers.length > 3) {
+  } else if (reflectors.length > 3) {
     throw new Error('No more than 3 reflectors can be specified at this time');
   }
 
-  const emails = referrers.map((r) => {
+  const emails = reflectors.map((reflector) => {
     return {
       from: '"Your Feedback Requested" <twinedapp@gmail.com>',
-      to: r,
+      to: reflector,
       subject: 'A Friend Has Requested A Referral! :)',
       html: `<h1>Hi there!</h1>
-                         <p>Your friend ${referee} has asked you to give them a review.</p>
+                         <p>Your friend ${reflectee} has asked you to give them a review.</p>
                          <a href="${'https://twined.herokuapp.com/'}"> Click here to leave them one!</a>
                         `,
     };
