@@ -1,30 +1,12 @@
 import { RequestHandler } from 'express';
-import axios, { AxiosRequestConfig } from 'axios';
-import FormData from 'form-data';
 import Reflection, { IReflection } from '../models/reflection';
+import fs from 'fs';
 
-const createRequestOptions = (
-  image: Express.Multer.File,
-): AxiosRequestConfig => {
-  const data = new FormData();
-  const url = 'https://api.imgur.com/3/image';
-  const headers = {
-    Authorization: `Client-ID ${process.env.IMGUR_CLIENT_ID}`,
-    ...data.getHeaders(),
-  };
+import { ImgurClient } from 'imgur';
+import { ImgurApiResponse, Payload } from 'imgur/lib/common/types';
 
-  data.append('image', image.buffer);
-  data.append('name', image.originalname);
-
-  const config: AxiosRequestConfig = {
-    method: 'post',
-    url,
-    headers,
-    data,
-  };
-
-  return config;
-};
+const clientId = `${process.env.IMGUR_CLIENT_ID}}`;
+const client = new ImgurClient({ clientId });
 
 const makeReflectionFromImgurResponse = (
   data: unknown,
@@ -34,7 +16,7 @@ const makeReflectionFromImgurResponse = (
   const reflection = data as IReflection;
   const { type, title, description, deletehash, link, name } = reflection;
 
-  Reflection.create({
+  return Reflection.create({
     type,
     reflectee,
     reflector,
@@ -53,17 +35,24 @@ export const uploadReflection: RequestHandler = (req, res) => {
   );
 
   const promises = files.map((img) => {
-    const config = createRequestOptions(img);
-    return axios(config)
-      .then((response) =>
-        makeReflectionFromImgurResponse(
-          response.data.data,
-          reflectee,
-          reflector,
-        ),
-      )
+    const payload: Payload = {
+      type: 'file',
+      name: img.originalname,
+      disable_audio: '0',
+      image: img.path,
+    };
+
+    return client
+      .upload(payload)
+      .then((response) => {
+        fs.unlinkSync(img.path);
+        const cast = response as unknown as ImgurApiResponse;
+        return makeReflectionFromImgurResponse(cast.data, reflectee, reflector);
+      })
       .catch((error) => console.log(error));
   });
 
-  res.status(200).json(Promise.all(promises));
+  Promise.all(promises)
+    .then((data) => res.status(200).json({ data }))
+    .catch((err) => res.status(500).json(err));
 };
