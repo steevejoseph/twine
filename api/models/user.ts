@@ -2,11 +2,19 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import { IReflection } from './reflection';
 
+export enum SEX {
+  MALE = 'male',
+  FEMALE = 'female',
+}
 export interface IUser extends mongoose.Document {
   name: string;
   email: string;
   password: string;
+  sex: SEX;
+  seeking: SEX;
+  friends: string[];
   reflections: IReflection[];
+  birthday: Date;
   isValidPassword(candidate: string): boolean;
 }
 
@@ -20,6 +28,19 @@ export const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+    friends: {
+      type: [String],
+      default: [],
+    },
+    gender: {
+      type: String,
+    },
+    seeking: {
+      type: String,
+    },
+    birthday: {
+      type: Date,
     },
   },
   { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } },
