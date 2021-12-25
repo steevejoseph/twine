@@ -1,0 +1,489 @@
+{
+	"info": {
+		"_postman_id": "bc46ef80-4c39-44d8-85ae-82a06cbb927a",
+		"name": "twine",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Local",
+			"item": [
+				{
+					"name": "Devbox Signup",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a49903e3-8b4d-45df-8d98-e755f79910ea",
+								"exec": [
+									"const jsonData = JSON.parse(responseBody);",
+									"const userStr = JSON.stringify(jsonData.user);",
+									"const token = jsonData.token;",
+									"",
+									"postman.setEnvironmentVariable(\"user\", userStr);",
+									"postman.setEnvironmentVariable(\"token\", token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "steevejoseph@knights.ucf.edu",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "dontlook",
+									"type": "text"
+								},
+								{
+									"key": "friends",
+									"value": "thesteevejoseph@gmail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "friends\n",
+									"value": "hello@steevejoseph.me",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/signup",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Devbox Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "de8063c3-b435-470e-885a-90285b97c78b",
+								"exec": [
+									"const jsonData = JSON.parse(responseBody);",
+									"const userStr = JSON.stringify(jsonData.user);",
+									"const token = jsonData.token;",
+									"",
+									"postman.setEnvironmentVariable(\"user\", userStr);",
+									"postman.setEnvironmentVariable(\"token\", token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "hello@steevejoseph.me",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "dontlook",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Steeve",
+									"type": "text"
+								},
+								{
+									"key": "token",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Devbox GET Users (auth required)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Clear Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/users/clearUsers",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"clearUsers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Request Referrals (auth)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "reflectors",
+									"value": "hello@steevejoseph.me",
+									"type": "text"
+								},
+								{
+									"key": "reflectors",
+									"value": "steevejoseph@knights.ucf.edu",
+									"type": "text"
+								},
+								{
+									"key": "reflectors",
+									"value": "blah",
+									"type": "text"
+								},
+								{
+									"key": "reflectors",
+									"value": "blah",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/api/reflections/request",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"reflections",
+								"request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Imgur API Upload",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Client-ID 04ba46f682ffaaa",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": [
+										"/Users/steeve/Desktop/hbait/before-fine.jpeg",
+										"/Users/steeve/Desktop/hbait/fine.jpeg"
+									],
+									"disabled": true
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/Users/steeve/Downloads/twine-test-vid.MP4"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api.imgur.com/3/upload\n",
+							"protocol": "https",
+							"host": [
+								"api",
+								"imgur",
+								"com"
+							],
+							"path": [
+								"3",
+								"upload\n"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Reflection",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Client-ID 04ba46f682ffaaa",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": [
+										"/Users/steeve/Desktop/hbait/before-fine.jpeg",
+										"/Users/steeve/Desktop/hbait/fine.jpeg"
+									]
+								},
+								{
+									"key": "reflector",
+									"value": "hello@steevejoseph.me",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/Users/steeve/Downloads/twine-test-vid.MP4"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/Users/steeve/Downloads/twine-test-audio.mp4",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/reflections/upload?reflectee=thesteevejoseph@gmail.com&reflector=hello@steevejoseph.me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"reflections",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "reflectee",
+									"value": "thesteevejoseph@gmail.com"
+								},
+								{
+									"key": "reflector",
+									"value": "hello@steevejoseph.me"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Reflectionc",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+								"key": "Authorization",
+								"value": "Client-ID 04ba46f682ffaaa",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": [
+										"/Users/steeve/Desktop/hbait/before-fine.jpeg",
+										"/Users/steeve/Desktop/hbait/fine.jpeg"
+									],
+									"disabled": true
+								},
+								{
+									"key": "reflector",
+									"value": "hello@steevejoseph.me",
+									"type": "text"
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/Users/steeve/Downloads/twine-test-vid.MP4"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://localhost:3000/api/reflections/upload?reflectee=thesteevejoseph@gmail.com&reflector=hello@steevejoseph.me",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"reflections",
+								"upload"
+							],
+							"query": [
+								{
+									"key": "reflectee",
+									"value": "thesteevejoseph@gmail.com"
+								},
+								{
+									"key": "reflector",
+									"value": "hello@steevejoseph.me"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Imgur Post",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Client-ID 04ba46f682ffaaa",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.imgur.com/3/image/tBzGFIFF4qAPEZy\n",
+							"protocol": "https",
+							"host": [
+								"api",
+								"imgur",
+								"com"
+							],
+							"path": [
+								"3",
+								"image",
+								"tBzGFIFF4qAPEZy\n"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Devbox GET Users Except Self (auth required)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/api/users/except-self",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"users",
+								"except-self"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
