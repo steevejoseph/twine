@@ -3,7 +3,7 @@ import { Strategy as localStrategy } from 'passport-local';
 import { Strategy as JWTstrategy } from 'passport-jwt';
 import { ExtractJwt as ExtractJWT } from 'passport-jwt';
 
-import UserModel from '../models/user';
+import User, { IUser } from '../models/user';
 
 passport.use(
   'signup',
@@ -11,10 +11,13 @@ passport.use(
     {
       usernameField: 'email',
       passwordField: 'password',
+      passReqToCallback: true,
     },
-    async (email, password, done) => {
+    async (req, email, password, done) => {
       try {
-        const user = await UserModel.create({ email, password });
+        const userFromReq: IUser = req.body;
+        const { type } = userFromReq;
+        const user = await User.create({ email, password, type });
 
         return done(null, user);
       } catch (error) {
@@ -33,7 +36,7 @@ passport.use(
     },
     async (email, password, done) => {
       try {
-        const user = await UserModel.findOne({ email });
+        const user = await User.findOne({ email });
 
         if (!user) {
           return done(null, false, { message: 'User not found' });

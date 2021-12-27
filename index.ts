@@ -29,7 +29,9 @@ require('./api/config/passport');
 
 /* GET home page. */
 router.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', '..', 'public', 'index.html'));
+  // @steeve: reenable if/when a frontend has been decided
+  // res.sendFile(path.join(__dirname, '..', '..', 'public', 'index.html'));
+  res.status(200).json();
 });
 
 app.use('/api', router);

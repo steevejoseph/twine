@@ -6,7 +6,7 @@
     "dev": "npm run build-client && ts-node-dev index.ts",
     "start": "ts-node index.ts",
     "postinstall": "npm run build",
-    "build": "tsc && npm run build-client",
+    "build": "tsc",
     "watch-node": "nodemon dist/index.js",
     "build-client": "cd client && npm run build"
   },

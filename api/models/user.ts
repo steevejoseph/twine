@@ -6,6 +6,11 @@ export enum SEX {
   MALE = 'male',
   FEMALE = 'female',
 }
+
+export enum USER_TYPE {
+  TEST = 'test',
+}
+
 export interface IUser extends mongoose.Document {
   name: string;
   email: string;
@@ -15,6 +20,7 @@ export interface IUser extends mongoose.Document {
   friends: string[];
   reflections: IReflection[];
   birthday: Date;
+  type: USER_TYPE;
   isValidPassword(candidate: string): boolean;
 }
 
@@ -41,6 +47,9 @@ export const UserSchema = new mongoose.Schema(
     },
     birthday: {
       type: Date,
+    },
+    type: {
+      type: String,
     },
   },
   { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } },

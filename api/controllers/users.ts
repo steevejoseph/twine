@@ -16,14 +16,20 @@ import { sendIntroEmailToUser } from './mail';
 export const login: RequestHandler = async (req, res, next) => {
   passport.authenticate('login', async (err, user) => {
     try {
-      if (err || !user) {
-        const error = new Error('An error occurred.');
+      if (err) {
+        return res.status(400).json({ message: `Bad request` });
+      }
 
-        return next(error);
+      if (!user) {
+        return res.status(404).json({
+          message: `Incorrect username or password`,
+        });
       }
 
       req.login(user, { session: false }, async (error) => {
-        if (error) return res.status(500).json(error);
+        if (error) {
+          return res.status(400).json({ message: 'Bad request' });
+        }
 
         const JWT_SECRET = process.env.JWT_SECRET as string;
         const token = jwt.sign({ user }, JWT_SECRET);
@@ -56,7 +62,7 @@ export const getUsers: RequestHandler = (req, res) => {
 
 export const getAllUsersExceptSelf: RequestHandler = (req, res) => {
   const decoded = decodeTokenFromRequest(req);
-  const user: IUser = decoded.user as IUser;
+  const user: IUser = decoded.user;
   User.find({ email: { $ne: user.email } }, (err, users) => {
     if (err) {
       res.status(500).json(err);
