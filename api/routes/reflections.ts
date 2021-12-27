@@ -1,6 +1,8 @@
 import { Router } from 'express';
-import { requestReflections } from '../controllers/mail';
-import { uploadReflection } from '../controllers/reflections';
+import {
+  uploadReflection,
+  requestReflections,
+} from '../controllers/reflections';
 import multer from 'multer';
 import fs from 'fs';
 

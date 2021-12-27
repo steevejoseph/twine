@@ -1,7 +1,6 @@
 import { RequestHandler } from 'express';
 import nodemailer from 'nodemailer';
 import { IUser } from '../models/user';
-import jwt, { JwtPayload } from 'jsonwebtoken';
 
 const { TWINE_APP_GMAIL_USERNAME, TWINE_APP_GMAIL_PASSWORD } = process.env;
 
@@ -73,20 +72,4 @@ export const sendEmailToReflectors = (
 
   const promises = emails.map((e) => transporter.sendMail(e));
   return Promise.all(promises);
-};
-
-/**
- * Sends email to list of reflectors
- * @param req the request object that contains the token that contains the requestor info
- * @param res the response body
- */
-export const requestReflections: RequestHandler = (req, res) => {
-  const token = req.headers.authorization?.split(' ')[1] as string;
-  const json = jwt.decode(token) as JwtPayload;
-  const user: IUser = json.user;
-
-  const { reflectors } = req.body;
-  sendEmailToReflectors(user.email, reflectors)
-    .then((response) => res.status(204).json({ response }))
-    .catch((err) => res.status(500).send(err));
 };
