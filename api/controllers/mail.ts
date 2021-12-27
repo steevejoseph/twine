@@ -1,4 +1,3 @@
-import { RequestHandler } from 'express';
 import nodemailer from 'nodemailer';
 import { IUser } from '../models/user';
 
