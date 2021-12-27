@@ -41,16 +41,16 @@ export const getAllUsersExceptSelf: RequestHandler = (req, res) => {
 export const getUsersExceptSelfAndFriends: RequestHandler = (req, res) => {
   const decoded = decodeTokenFromRequest(req);
   const user: IUser = decoded.user;
-  User.find(
-    { email: { $ne: user.email }, friends: { $nin: user.friends } },
-    (err, users) => {
-      if (err) {
-        res.status(500).json(err);
-      }
+  User.find({
+    email: { $ne: user.email, $nin: user.friends },
+    new: true,
+  }).exec((err, users) => {
+    if (err) {
+      res.status(500).json(err);
+    }
 
-      res.status(200).json(users);
-    },
-  );
+    res.status(200).json(users);
+  });
 };
 
 /**
