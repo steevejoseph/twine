@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import { RequestHandler } from 'express';
@@ -57,7 +56,7 @@ export const getUsers: RequestHandler = (req, res) => {
 
 export const getAllUsersExceptSelf: RequestHandler = (req, res) => {
   const decoded = decodeTokenFromRequest(req);
-  const user: IUser = decoded.user;
+  const user: IUser = decoded.user as IUser;
   User.find({ email: { $ne: user.email } }, (err, users) => {
     if (err) {
       res.status(500).json(err);

@@ -8,10 +8,12 @@ import router from './api/routes';
 import passport from 'passport';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-mongoose.connect(`${process.env.MONGO_ATLAS_URL}`);
-
-mongoose.connection.on('open', () => console.log('Connected to mongo server.'));
+mongoose.connect(`${process.env.MONGO_ATLAS_URL}`, (err) => {
+  if (err) {
+    console.log(err);
+  }
+  console.log('Connected to mongo server.');
+});
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -32,6 +34,7 @@ router.get('/', (req, res) => {
 
 app.use('/api', router);
 
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Express Typescript app @ http://localhost:${PORT}`);
 });

@@ -2,8 +2,7 @@ import { Router } from 'express';
 import passport from 'passport';
 import userRouter from './users';
 import reflectionsRouter from './reflections';
-import { login } from '../controllers/users';
-import { sendIntroEmailToUser } from '../controllers/mail';
+import { login, performNewUserSignupActions } from '../controllers/users';
 
 const router = Router();
 
@@ -13,7 +12,7 @@ router.post(
     session: false,
     passReqToCallback: true,
   }),
-  sendIntroEmailToUser,
+  performNewUserSignupActions,
   login,
 );
 
