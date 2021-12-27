@@ -19,8 +19,7 @@ const transporter = nodemailer.createTransport({
  * @param res response object
  * @param next next middleware to run after email is sent
  */
-export const sendIntroEmailToUser: RequestHandler = (req, res, next) => {
-  const user: IUser = req.user as IUser;
+export const sendIntroEmailToUser = (user: IUser) => {
   const mailOptions = {
     from: '"Your new app for authentic connection" <twinedapp@gmail.com>',
     to: user.email,
@@ -35,11 +34,10 @@ export const sendIntroEmailToUser: RequestHandler = (req, res, next) => {
   transporter.sendMail(mailOptions, (err, info) => {
     if (err) {
       console.log(err);
+      throw new Error(err.message);
     }
-    console.log('Message send: %s', info.messageId);
-    // console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    return info;
   });
-  next();
 };
 
 /**
