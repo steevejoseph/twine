@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
 import { IReflection } from './reflection';
 
@@ -9,6 +9,8 @@ export enum SEX {
 
 export enum USER_TYPE {
   TEST = 'test',
+  FREE = 'free',
+  ADMIN = 'admin',
 }
 
 export interface IUser extends mongoose.Document {
@@ -18,7 +20,8 @@ export interface IUser extends mongoose.Document {
   sex: SEX;
   seeking: SEX;
   friends: string[];
-  reflections: IReflection[];
+  reflectionsReceived: IReflection[];
+  reflectionsGiven: IReflection[];
   birthday: Date;
   type: USER_TYPE;
   isValidPassword(candidate: string): boolean;
@@ -50,6 +53,16 @@ export const UserSchema = new mongoose.Schema(
     },
     type: {
       type: String,
+    },
+    reflectionsReceived: {
+      type: [Schema.Types.ObjectId],
+      ref: 'Reflection',
+      default: [],
+    },
+    reflectionsGiven: {
+      type: [Schema.Types.ObjectId],
+      ref: 'Reflection',
+      default: [],
     },
   },
   { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } },
