@@ -1,4 +1,4 @@
-name: Test-Build
+name: Test API with Postman
 on: [pull_request, push]
 jobs:
   test-api:
