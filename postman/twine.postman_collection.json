@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "bc46ef80-4c39-44d8-85ae-82a06cbb927a",
+		"_postman_id": "cbf3d909-cd4e-403b-b0fd-c25e229ec709",
 		"name": "twine",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -20,7 +20,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "a49903e3-8b4d-45df-8d98-e755f79910ea",
 												"exec": [
 													"pm.test(\"Signup should pass on randomly generated user\", () => {",
 													"    pm.response.to.have.status(200);",
@@ -33,7 +32,6 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "f05b4a9e-f9bf-4202-abcc-c612dd5f0102",
 												"exec": [
 													"const r = Math.floor(Math.random() * 1e9);",
 													"const signupUserEmail = `test${r}@fakedomain.com`;",
@@ -91,7 +89,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "a49903e3-8b4d-45df-8d98-e755f79910ea",
 												"exec": [
 													"pm.test(\"Signup should fail when a duplicate email passed\", () => {",
 													"    pm.response.to.have.status(500);",
@@ -104,7 +101,6 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "f05b4a9e-f9bf-4202-abcc-c612dd5f0102",
 												"exec": [
 													""
 												],
@@ -154,9 +150,7 @@
 									},
 									"response": []
 								}
-							],
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
+							]
 						},
 						{
 							"name": "Login",
@@ -167,7 +161,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "de8063c3-b435-470e-885a-90285b97c78b",
 												"exec": [
 													"pm.test(\"Login should pass with existing user\", () => {",
 													"    pm.response.to.have.status(200);",
@@ -188,7 +181,6 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "edc5dc16-ae22-4a20-9dfc-616995834864",
 												"exec": [
 													""
 												],
@@ -239,7 +231,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "de8063c3-b435-470e-885a-90285b97c78b",
 												"exec": [
 													"pm.test(\"Login should pass with existing user\", () => {",
 													"    pm.response.to.have.status(404);",
@@ -258,7 +249,6 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "edc5dc16-ae22-4a20-9dfc-616995834864",
 												"exec": [
 													""
 												],
@@ -309,7 +299,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "de8063c3-b435-470e-885a-90285b97c78b",
 												"exec": [
 													"pm.test(\"Login should pass with existing user\", () => {",
 													"    pm.response.to.have.status(404);",
@@ -319,10 +308,7 @@
 													"",
 													"pm.test(\"Failed login should return error message\", function () {",
 													"    pm.expect(!!jsonData.message).to.eql(true);",
-													"});",
-													"",
-													"postman.setEnvironmentVariable(\"token\", jsonData.token);",
-													""
+													"});"
 												],
 												"type": "text/javascript"
 											}
@@ -330,7 +316,6 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "edc5dc16-ae22-4a20-9dfc-616995834864",
 												"exec": [
 													""
 												],
@@ -375,9 +360,7 @@
 									},
 									"response": []
 								}
-							],
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
+							]
 						},
 						{
 							"name": "GET Users",
@@ -388,7 +371,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "9925409b-2dd7-4a5b-ba39-38339ef9630a",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -435,7 +417,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "9925409b-2dd7-4a5b-ba39-38339ef9630a",
 												"exec": [
 													"pm.test(\"Status code is 401\", function () {",
 													"    pm.response.to.have.status(401);",
@@ -496,7 +477,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "0328813a-5ab9-418e-817f-b547f4a7f95d",
 												"exec": [
 													"pm.test(\"Status code is 401\", function () {",
 													"    pm.response.to.have.status(401);",
@@ -507,16 +487,6 @@
 										}
 									],
 									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{token}}",
-													"type": "string"
-												}
-											]
-										},
 										"method": "GET",
 										"header": [],
 										"url": {
@@ -564,17 +534,20 @@
 								},
 								{
 									"name": "[FAIL] No auth for GET Users Except Self And Friends",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 401\", function () {",
+													"    pm.response.to.have.status(401);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
 									"request": {
-										"auth": {
-											"type": "bearer",
-											"bearer": [
-												{
-													"key": "token",
-													"value": "{{token}}",
-													"type": "string"
-												}
-											]
-										},
 										"method": "GET",
 										"header": [],
 										"url": {
@@ -591,13 +564,9 @@
 									},
 									"response": []
 								}
-							],
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
+							]
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "Reflections",
@@ -611,7 +580,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "8fd0d156-aa3b-4f3c-9886-74460d4a73ed",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -642,10 +610,7 @@
 												{
 													"key": "image",
 													"type": "file",
-													"src": [
-														"/Users/steeve/Desktop/hbait/before-fine.jpeg",
-														"/Users/steeve/Desktop/hbait/fine.jpeg"
-													]
+													"src": "/Users/steeve/UCF/CS/Projects/twine/postman/test-images/before-fine.jpeg"
 												},
 												{
 													"key": "reflectee",
@@ -691,7 +656,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "8fd0d156-aa3b-4f3c-9886-74460d4a73ed",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -756,7 +720,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "e7e6fe27-6a47-45e8-922b-d3d147d31158",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -806,7 +769,7 @@
 												{
 													"key": "image",
 													"type": "file",
-													"src": "/Users/steeve/Downloads/twine-test-vid.MP4",
+													"src": [],
 													"disabled": true
 												},
 												{
@@ -837,7 +800,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "020a1ce8-24e7-4b59-9137-10caa7cc90fe",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -912,9 +874,7 @@
 									},
 									"response": []
 								}
-							],
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
+							]
 						},
 						{
 							"name": "Request Reflection",
@@ -925,7 +885,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "e041beb2-cf39-40c0-bfda-e08e2cd5842c",
 												"exec": [
 													"pm.test(\"Status code is 200\", function () {",
 													"    pm.response.to.have.status(200);",
@@ -996,7 +955,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "8e018384-8a63-47cf-8d2c-2b94f832ded6",
 												"exec": [
 													"pm.test(\"Status code is 401\", function () {",
 													"    pm.response.to.have.status(401);",
@@ -1061,7 +1019,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "8e018384-8a63-47cf-8d2c-2b94f832ded6",
 												"exec": [
 													"pm.test(\"Status code is 400\", function () {",
 													"    pm.response.to.have.status(400);",
@@ -1095,12 +1052,14 @@
 												{
 													"key": "reflectors",
 													"value": "hello@steevejoseph.me",
-													"type": "text"
+													"type": "text",
+													"disabled": true
 												},
 												{
 													"key": "reflectors",
 													"value": "steevejoseph@knights.ucf.edu",
-													"type": "text"
+													"type": "text",
+													"disabled": true
 												},
 												{
 													"key": "reflectors",
@@ -1130,16 +1089,11 @@
 									},
 									"response": []
 								}
-							],
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
+							]
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "Imgur",
@@ -1219,17 +1173,13 @@
 					},
 					"response": []
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		}
 	],
 	"variable": [
 		{
-			"id": "3dde052b-380c-4d91-90fe-25d2ef6d4b84",
 			"key": "signupUserEmail",
-			"value": "",
-			"type": "string"
+			"value": ""
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
