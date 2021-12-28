@@ -107,8 +107,31 @@ const saveReflectionsToDb = (
 export const uploadReflection: RequestHandler = (req, res) => {
   const files = req.files as unknown as Express.Multer.File[];
   const { reflectee, reflector } = <{ reflectee: string; reflector: string }>(
-    req.query
+    req.body
   );
+
+  if (!reflectee) {
+    return res
+      .status(400)
+      .json({ message: 'Please include reflectee in post body' });
+  }
+  if (!reflector) {
+    return res
+      .status(400)
+      .json({ message: 'Please include reflector in post body' });
+  }
+  if (!files || files.length === 0) {
+    return res
+      .status(400)
+      .json({ message: 'Please include image(s) in post body' });
+  }
+
+  const contentType = req.headers['content-type'];
+  if (!contentType || !contentType.includes('multipart/form-data')) {
+    return res
+      .status(400)
+      .json({ message: 'Please include post body as multipart/form-data' });
+  }
 
   return saveReflectionsToDb(files, reflectee, reflector)
     .then((data) => res.status(200).json({ data }))
@@ -122,10 +145,28 @@ export const uploadReflection: RequestHandler = (req, res) => {
  */
 export const requestReflections: RequestHandler = (req, res) => {
   const token = req.headers.authorization?.split(' ')[1] as string;
+
+  if (!token) {
+    return res.status(401).json({ message: 'Unauthorizd' });
+  }
+
   const json = jwt.decode(token) as JwtPayload;
+
+  if (!json) {
+    return res.status(400).json({ message: 'No user found for token' });
+  }
+
   const user: IUser = json.user;
 
+  if (!user) {
+    return res.status(400).json({ message: 'No user found for token' });
+  }
+
   const { reflectors } = req.body;
+
+  if (!reflectors) {
+    return res.status(400).json({ message: 'No reflector found in post body' });
+  }
 
   if (!shouldSendUserEmail(user)) {
     return res.status(200).json({
