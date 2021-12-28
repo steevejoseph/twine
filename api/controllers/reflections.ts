@@ -6,7 +6,7 @@ import { ImgurClient } from 'imgur';
 import { ImgurApiResponse, Payload } from 'imgur/lib/common/types';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { sendEmailToReflectors } from './mail';
-import { IUser } from '../models/user';
+import { IUser, shouldSendUserEmail } from '../models/user';
 
 const clientId = `${process.env.IMGUR_CLIENT_ID}}`;
 const client = new ImgurClient({ clientId });
@@ -102,6 +102,13 @@ export const requestReflections: RequestHandler = (req, res) => {
   const user: IUser = json.user;
 
   const { reflectors } = req.body;
+
+  if (!shouldSendUserEmail(user)) {
+    return res.status(200).json({
+      message: `Email for user '${user.email}' (type: '${user.type}') omitted`,
+    });
+  }
+
   return sendEmailToReflectors(user.email, reflectors)
     .then((response) => res.status(204).json({ response }))
     .catch((err) => res.status(500).send(err));

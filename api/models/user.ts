@@ -13,6 +13,21 @@ export enum USER_TYPE {
   ADMIN = 'admin',
 }
 
+/**
+ * Determines whether an email should be sent
+ * @param user the user making the mail request
+ * @returns a boolean representing whether the email should be sent
+ */
+export const shouldSendUserEmail = (user: IUser): boolean => {
+  const dontSend = [USER_TYPE.TEST, USER_TYPE.ADMIN];
+
+  if (dontSend.includes(user.type)) {
+    return false;
+  }
+
+  return true;
+};
+
 export interface IUser extends mongoose.Document {
   name: string;
   email: string;

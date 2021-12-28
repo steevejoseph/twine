@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer';
-import { IUser } from '../models/user';
+import { IUser, shouldSendUserEmail } from '../models/user';
 
 const { TWINE_APP_GMAIL_USERNAME, TWINE_APP_GMAIL_PASSWORD } = process.env;
 
@@ -19,6 +19,10 @@ const transporter = nodemailer.createTransport({
  * @param next next middleware to run after email is sent
  */
 export const sendIntroEmailToUser = (user: IUser) => {
+  if (!shouldSendUserEmail(user)) {
+    return;
+  }
+
   const mailOptions = {
     from: '"Your new app for authentic connection" <twinedapp@gmail.com>',
     to: user.email,
@@ -41,7 +45,7 @@ export const sendIntroEmailToUser = (user: IUser) => {
 
 /**
  * Utility function for sending out emails when a reflection/referral is requested
- * @param reflectee the person asking for relflections
+ * @param reflectee the person asking for reflections
  * @param reflectors the person granting the request
  * @returns an array of sent message info that describes the outcome of each email transmission
  */
