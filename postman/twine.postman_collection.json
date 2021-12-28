@@ -13,285 +13,587 @@
 					"item": [
 						{
 							"name": "Signup",
-							"event": [
+							"item": [
 								{
-									"listen": "test",
-									"script": {
-										"id": "a49903e3-8b4d-45df-8d98-e755f79910ea",
-										"exec": [
-											"pm.test(\"Signup should pass on rangen user\", () => {",
-											"    pm.response.to.have.status(200);",
-											"})",
-											"// pm.test(\"Signup should fail when user already exists\", () => {",
-											"//     pm.response.to.have.status(500);",
-											"// })",
-											"",
-											""
-										],
-										"type": "text/javascript"
-									}
+									"name": "Signup",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a49903e3-8b4d-45df-8d98-e755f79910ea",
+												"exec": [
+													"pm.test(\"Signup should pass on randomly generated user\", () => {",
+													"    pm.response.to.have.status(200);",
+													"})",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "f05b4a9e-f9bf-4202-abcc-c612dd5f0102",
+												"exec": [
+													"const r = Math.floor(Math.random() * 1e9);",
+													"const signupUserEmail = `test${r}@fakedomain.com`;",
+													"pm.collectionVariables.set('signupUserEmail', signupUserEmail);"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "email",
+													"value": "{{signupUserEmail}}",
+													"type": "text"
+												},
+												{
+													"key": "password",
+													"value": "test",
+													"type": "text"
+												},
+												{
+													"key": "type",
+													"value": "test",
+													"type": "text"
+												},
+												{
+													"key": "friends",
+													"value": "thesteevejoseph@gmail.com",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "{{API_URL}}/api/signup",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"signup"
+											]
+										}
+									},
+									"response": []
 								},
 								{
-									"listen": "prerequest",
-									"script": {
-										"id": "f05b4a9e-f9bf-4202-abcc-c612dd5f0102",
-										"exec": [
-											"const r = Math.floor(Math.random() * 1e9);",
-											"const signupUserEmail = `test${r}@fakedomain.com`;",
-											"pm.collectionVariables.set('signupUserEmail', signupUserEmail);"
-										],
-										"type": "text/javascript"
-									}
+									"name": "[FAIL] Duplicate Signup Email",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "a49903e3-8b4d-45df-8d98-e755f79910ea",
+												"exec": [
+													"pm.test(\"Signup should fail when a duplicate email passed\", () => {",
+													"    pm.response.to.have.status(500);",
+													"})",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "f05b4a9e-f9bf-4202-abcc-c612dd5f0102",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "email",
+													"value": "thesteevejoseph@gmail.com",
+													"type": "text"
+												},
+												{
+													"key": "password",
+													"value": "test",
+													"type": "text"
+												},
+												{
+													"key": "type",
+													"value": "test",
+													"type": "text"
+												},
+												{
+													"key": "friends",
+													"value": "thesteevejoseph@gmail.com",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "{{API_URL}}/api/signup",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"signup"
+											]
+										}
+									},
+									"response": []
 								}
 							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "urlencoded",
-									"urlencoded": [
-										{
-											"key": "email",
-											"value": "{{signupUserEmail}}",
-											"type": "text"
-										},
-										{
-											"key": "password",
-											"value": "test",
-											"type": "text"
-										},
-										{
-											"key": "friends",
-											"value": "thesteevejoseph@gmail.com",
-											"type": "text",
-											"disabled": true
-										},
-										{
-											"key": "type",
-											"value": "test",
-											"type": "text"
-										}
-									]
-								},
-								"url": {
-									"raw": "{{API_URL}}/api/signup",
-									"host": [
-										"{{API_URL}}"
-									],
-									"path": [
-										"api",
-										"signup"
-									]
-								}
-							},
-							"response": []
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
 						},
 						{
 							"name": "Login",
-							"event": [
+							"item": [
 								{
-									"listen": "test",
-									"script": {
-										"id": "de8063c3-b435-470e-885a-90285b97c78b",
-										"exec": [
-											"pm.test(\"Login should pass with existing user\", () => {",
-											"    pm.response.to.have.status(200);",
-											"})",
-											"",
-											"",
-											"pm.test(\"Login should return a token\", function () {",
-											"    var jsonData = pm.response.json();",
-											"    pm.expect(!!jsonData.token).to.eql(true);",
-											"});",
-											"",
-											"const jsonData = JSON.parse(responseBody);",
-											"postman.setEnvironmentVariable(\"token\", jsonData.token);",
-											""
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "edc5dc16-ae22-4a20-9dfc-616995834864",
-										"exec": [
-											""
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "urlencoded",
-									"urlencoded": [
+									"name": "Login",
+									"event": [
 										{
-											"key": "email",
-											"value": "thesteevejoseph@gmail.com",
-											"type": "text"
+											"listen": "test",
+											"script": {
+												"id": "de8063c3-b435-470e-885a-90285b97c78b",
+												"exec": [
+													"pm.test(\"Login should pass with existing user\", () => {",
+													"    pm.response.to.have.status(200);",
+													"})",
+													"",
+													"const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Login should return a token\", function () {",
+													"    pm.expect(!!jsonData.token).to.eql(true);",
+													"});",
+													"",
+													"postman.setEnvironmentVariable(\"token\", jsonData.token);",
+													""
+												],
+												"type": "text/javascript"
+											}
 										},
 										{
-											"key": "password",
-											"value": "dontlook",
-											"type": "text"
+											"listen": "prerequest",
+											"script": {
+												"id": "edc5dc16-ae22-4a20-9dfc-616995834864",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "email",
+													"value": "thesteevejoseph@gmail.com",
+													"type": "text"
+												},
+												{
+													"key": "password",
+													"value": "dontlook",
+													"type": "text"
+												},
+												{
+													"key": "token",
+													"value": "",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "{{API_URL}}/api/login",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[Fail] Incorrect password",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "de8063c3-b435-470e-885a-90285b97c78b",
+												"exec": [
+													"pm.test(\"Login should pass with existing user\", () => {",
+													"    pm.response.to.have.status(404);",
+													"})",
+													"",
+													"const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Failed login should return error message\", function () {",
+													"    pm.expect(!!jsonData.message).to.eql(true);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
 										},
 										{
-											"key": "token",
-											"value": "",
-											"type": "text",
-											"disabled": true
+											"listen": "prerequest",
+											"script": {
+												"id": "edc5dc16-ae22-4a20-9dfc-616995834864",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
 										}
-									]
-								},
-								"url": {
-									"raw": "{{API_URL}}/api/login",
-									"host": [
-										"{{API_URL}}"
 									],
-									"path": [
-										"api",
-										"login"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GET Users (auth required)",
-							"event": [
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "email",
+													"value": "thesteevejoseph@gmail.com",
+													"type": "text"
+												},
+												{
+													"key": "password",
+													"value": "dontlook1",
+													"type": "text"
+												},
+												{
+													"key": "token",
+													"value": "",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "{{API_URL}}/api/login",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
 								{
-									"listen": "test",
-									"script": {
-										"id": "9925409b-2dd7-4a5b-ba39-38339ef9630a",
-										"exec": [
-											"pm.test(\"Status code is 200\", function () {",
-											"    pm.response.to.have.status(200);",
-											"});",
-											"",
-											"pm.test(\"Users array non-empty\", function () {",
-											"    var jsonData = pm.response.json();",
-											"    pm.expect(jsonData.length).to.be.gt(0);",
-											"});"
-										],
-										"type": "text/javascript"
-									}
+									"name": "[Fail] Incorrect username",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "de8063c3-b435-470e-885a-90285b97c78b",
+												"exec": [
+													"pm.test(\"Login should pass with existing user\", () => {",
+													"    pm.response.to.have.status(404);",
+													"})",
+													"",
+													"const jsonData = pm.response.json();",
+													"",
+													"pm.test(\"Failed login should return error message\", function () {",
+													"    pm.expect(!!jsonData.message).to.eql(true);",
+													"});",
+													"",
+													"postman.setEnvironmentVariable(\"token\", jsonData.token);",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "edc5dc16-ae22-4a20-9dfc-616995834864",
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "email",
+													"value": "thesteevejoseph1@gmail.com",
+													"type": "text"
+												},
+												{
+													"key": "password",
+													"value": "dontlook",
+													"type": "text"
+												},
+												{
+													"key": "token",
+													"value": "",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "{{API_URL}}/api/login",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"login"
+											]
+										}
+									},
+									"response": []
 								}
 							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{API_URL}}/api/users",
-									"host": [
-										"{{API_URL}}"
-									],
-									"path": [
-										"api",
-										"users"
-									]
-								}
-							},
-							"response": []
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
 						},
 						{
-							"name": "Clear Users",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
+							"name": "GET Users",
+							"item": [
+								{
+									"name": "GET Users (auth required)",
+									"event": [
 										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
+											"listen": "test",
+											"script": {
+												"id": "9925409b-2dd7-4a5b-ba39-38339ef9630a",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"Users array non-empty\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData.length).to.be.gt(0);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
 										}
-									]
-								},
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "{{API_URL}}/api/users/clearUsers",
-									"host": [
-										"{{API_URL}}"
 									],
-									"path": [
-										"api",
-										"users",
-										"clearUsers"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GET Users Except Self (auth required)",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{API_URL}}/api/users",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[FAIL] No auth for GET Users",
+									"event": [
 										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
+											"listen": "test",
+											"script": {
+												"id": "9925409b-2dd7-4a5b-ba39-38339ef9630a",
+												"exec": [
+													"pm.test(\"Status code is 401\", function () {",
+													"    pm.response.to.have.status(401);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
 										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{API_URL}}/api/users/except-self",
-									"host": [
-										"{{API_URL}}"
 									],
-									"path": [
-										"api",
-										"users",
-										"except-self"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GET Users Except Self And Friends (auth required)",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{API_URL}}/api/users",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET Users Except Self (auth required)",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{API_URL}}/api/users/except-self",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"users",
+												"except-self"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[FAIL] No auth for GET Users Except Self",
+									"event": [
 										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
+											"listen": "test",
+											"script": {
+												"id": "0328813a-5ab9-418e-817f-b547f4a7f95d",
+												"exec": [
+													"pm.test(\"Status code is 401\", function () {",
+													"    pm.response.to.have.status(401);",
+													"});"
+												],
+												"type": "text/javascript"
+											}
 										}
-									]
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{API_URL}}/api/users/except-self-friends",
-									"host": [
-										"{{API_URL}}"
 									],
-									"path": [
-										"api",
-										"users",
-										"except-self-friends"
-									]
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{API_URL}}/api/users/except-self",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"users",
+												"except-self"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET Users Except Self And Friends (auth required)",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{API_URL}}/api/users/except-self-friends",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"users",
+												"except-self-friends"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[FAIL] No auth for GET Users Except Self And Friends",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{API_URL}}/api/users/except-self-friends",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"users",
+												"except-self-friends"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -302,125 +604,535 @@
 					"item": [
 						{
 							"name": "Upload Reflection",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
-										"key": "Authorization",
-										"value": "Client-ID 04ba46f682ffaaa",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "formdata",
-									"formdata": [
+							"item": [
+								{
+									"name": "Upload Reflection",
+									"event": [
 										{
-											"key": "image",
-											"type": "file",
-											"src": [
-												"/Users/steeve/Desktop/hbait/before-fine.jpeg",
-												"/Users/steeve/Desktop/hbait/fine.jpeg"
+											"listen": "test",
+											"script": {
+												"id": "8fd0d156-aa3b-4f3c-9886-74460d4a73ed",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													"",
+													"pm.test(\"Data field non-empty\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData).have.property('data');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+												"key": "Authorization",
+												"value": "Client-ID 04ba46f682ffaaa",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "image",
+													"type": "file",
+													"src": [
+														"/Users/steeve/Desktop/hbait/before-fine.jpeg",
+														"/Users/steeve/Desktop/hbait/fine.jpeg"
+													]
+												},
+												{
+													"key": "reflectee",
+													"value": "thesteevejoseph@gmail.com",
+													"type": "text"
+												},
+												{
+													"key": "reflector",
+													"value": "hello@steevejoseph.me",
+													"type": "text"
+												},
+												{
+													"key": "image",
+													"type": "file",
+													"src": "/Users/steeve/Downloads/twine-test-vid.MP4",
+													"disabled": true
+												},
+												{
+													"key": "image",
+													"type": "file",
+													"src": "/Users/steeve/Desktop/hbait/before-fine.jpeg",
+													"disabled": true
+												}
 											]
 										},
-										{
-											"key": "reflector",
-											"value": "hello@steevejoseph.me",
-											"type": "text"
-										},
-										{
-											"key": "image",
-											"type": "file",
-											"src": "/Users/steeve/Downloads/twine-test-vid.MP4",
-											"disabled": true
-										},
-										{
-											"key": "image",
-											"type": "file",
-											"src": "/Users/steeve/Downloads/twine-test-audio.mp4",
-											"disabled": true
+										"url": {
+											"raw": "{{API_URL}}/api/reflections/upload",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"reflections",
+												"upload"
+											]
 										}
-									]
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{API_URL}}/api/reflections/upload?reflectee=thesteevejoseph@gmail.com&reflector=hello@steevejoseph.me",
-									"host": [
-										"{{API_URL}}"
-									],
-									"path": [
-										"api",
-										"reflections",
-										"upload"
-									],
-									"query": [
+								{
+									"name": "[FAIL] Reflection Not Uploaded as Form Data",
+									"event": [
 										{
-											"key": "reflectee",
-											"value": "thesteevejoseph@gmail.com"
-										},
-										{
-											"key": "reflector",
-											"value": "hello@steevejoseph.me"
+											"listen": "test",
+											"script": {
+												"id": "8fd0d156-aa3b-4f3c-9886-74460d4a73ed",
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"pm.test(\"Message field non-empty\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData).have.property('message');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
 										}
-									]
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Client-ID 04ba46f682ffaaa",
+												"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman."
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "reflectee",
+													"value": "a",
+													"type": "text"
+												},
+												{
+													"key": "reflector",
+													"value": "b",
+													"type": "text"
+												},
+												{
+													"key": "image\n",
+													"value": "",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "{{API_URL}}/api/reflections/upload",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"reflections",
+												"upload"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[FAIL] No reflector in body of Upload Reflection",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "e7e6fe27-6a47-45e8-922b-d3d147d31158",
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"pm.test(\"Message field non-empty\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData).have.property('message');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Client-ID 04ba46f682ffaaa",
+												"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman."
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "image",
+													"type": "file",
+													"src": [
+														"/Users/steeve/Desktop/hbait/before-fine.jpeg",
+														"/Users/steeve/Desktop/hbait/fine.jpeg"
+													]
+												},
+												{
+													"key": "reflectee",
+													"value": "thesteevejoseph@gmail.com",
+													"type": "text"
+												},
+												{
+													"key": "reflector",
+													"value": "hello@steevejoseph.me",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "image",
+													"type": "file",
+													"src": "/Users/steeve/Downloads/twine-test-vid.MP4",
+													"disabled": true
+												},
+												{
+													"key": "image",
+													"type": "file",
+													"src": "/Users/steeve/Desktop/hbait/before-fine.jpeg",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "{{API_URL}}/api/reflections/upload",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"reflections",
+												"upload"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[FAIL] No reflectee in body of Upload Reflection Copy",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "020a1ce8-24e7-4b59-9137-10caa7cc90fe",
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"pm.test(\"Message field non-empty\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData).have.property('message');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"type": "text",
+												"value": "Client-ID 04ba46f682ffaaa",
+												"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman."
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "image",
+													"type": "file",
+													"src": [
+														"/Users/steeve/Desktop/hbait/before-fine.jpeg",
+														"/Users/steeve/Desktop/hbait/fine.jpeg"
+													]
+												},
+												{
+													"key": "reflectee",
+													"value": "thesteevejoseph@gmail.com",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "reflector",
+													"value": "hello@steevejoseph.me",
+													"type": "text"
+												},
+												{
+													"key": "image",
+													"type": "file",
+													"src": "/Users/steeve/Downloads/twine-test-vid.MP4",
+													"disabled": true
+												},
+												{
+													"key": "image",
+													"type": "file",
+													"src": "/Users/steeve/Desktop/hbait/before-fine.jpeg",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "{{API_URL}}/api/reflections/upload",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"reflections",
+												"upload"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
 						},
 						{
-							"name": "Request Reflections (auth)",
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
+							"name": "Request Reflection",
+							"item": [
+								{
+									"name": "Request Reflections (auth)",
+									"event": [
 										{
-											"key": "token",
-											"value": "{{token}}",
-											"type": "string"
+											"listen": "test",
+											"script": {
+												"id": "e041beb2-cf39-40c0-bfda-e08e2cd5842c",
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {",
+													"    pm.response.to.have.status(200);",
+													"});",
+													""
+												],
+												"type": "text/javascript"
+											}
 										}
-									]
-								},
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "urlencoded",
-									"urlencoded": [
-										{
-											"key": "reflectors",
-											"value": "hello@steevejoseph.me",
-											"type": "text"
-										},
-										{
-											"key": "reflectors",
-											"value": "steevejoseph@knights.ucf.edu",
-											"type": "text"
-										},
-										{
-											"key": "reflectors",
-											"value": "blah",
-											"type": "text",
-											"disabled": true
-										},
-										{
-											"key": "reflectors",
-											"value": "blah",
-											"type": "text",
-											"disabled": true
-										}
-									]
-								},
-								"url": {
-									"raw": "{{API_URL}}/api/reflections/request",
-									"host": [
-										"{{API_URL}}"
 									],
-									"path": [
-										"api",
-										"reflections",
-										"request"
-									]
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "reflectors",
+													"value": "hello@steevejoseph.me",
+													"type": "text"
+												},
+												{
+													"key": "reflectors",
+													"value": "steevejoseph@knights.ucf.edu",
+													"type": "text"
+												},
+												{
+													"key": "reflectors",
+													"value": "blah",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "reflectors",
+													"value": "blah",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "{{API_URL}}/api/reflections/request",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"reflections",
+												"request"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[FAIL] No auth for Request Reflections",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "8e018384-8a63-47cf-8d2c-2b94f832ded6",
+												"exec": [
+													"pm.test(\"Status code is 401\", function () {",
+													"    pm.response.to.have.status(401);",
+													"});",
+													"",
+													"pm.test(\"Message field non-empty\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData).have.property('message');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "reflectors",
+													"value": "hello@steevejoseph.me",
+													"type": "text"
+												},
+												{
+													"key": "reflectors",
+													"value": "steevejoseph@knights.ucf.edu",
+													"type": "text"
+												},
+												{
+													"key": "reflectors",
+													"value": "blah",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "reflectors",
+													"value": "blah",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "{{API_URL}}/api/reflections/request",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"reflections",
+												"request"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[FAIL] No reflector for Request Reflections",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "8e018384-8a63-47cf-8d2c-2b94f832ded6",
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {",
+													"    pm.response.to.have.status(400);",
+													"});",
+													"",
+													"pm.test(\"Message field non-empty\", function () {",
+													"    var jsonData = pm.response.json();",
+													"    pm.expect(jsonData).have.property('message');",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "reflectors",
+													"value": "hello@steevejoseph.me",
+													"type": "text"
+												},
+												{
+													"key": "reflectors",
+													"value": "steevejoseph@knights.ucf.edu",
+													"type": "text"
+												},
+												{
+													"key": "reflectors",
+													"value": "blah",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "reflectors",
+													"value": "blah",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "{{API_URL}}/api/reflections/request",
+											"host": [
+												"{{API_URL}}"
+											],
+											"path": [
+												"api",
+												"reflections",
+												"request"
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -513,7 +1225,7 @@
 	],
 	"variable": [
 		{
-			"id": "7b6d53d9-0cf5-4c0a-975c-988fd9afe9c8",
+			"id": "3dde052b-380c-4d91-90fe-25d2ef6d4b84",
 			"key": "signupUserEmail",
 			"value": "",
 			"type": "string"
