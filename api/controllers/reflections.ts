@@ -6,10 +6,28 @@ import { ImgurClient } from 'imgur';
 import { ImgurApiResponse, Payload } from 'imgur/lib/common/types';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { sendEmailToReflectors } from './mail';
-import { IUser, shouldSendUserEmail } from '../models/user';
+import User, { IUser, shouldSendUserEmail } from '../models/user';
 
 const clientId = `${process.env.IMGUR_CLIENT_ID}}`;
 const client = new ImgurClient({ clientId });
+
+/**
+ * Inserts a stored reflection into a reflectee
+ * @param reflectee email of the user that the reflection will be received by
+ * @param stored the reflection stored in DB
+ */
+const addNewReflectionToReflectee = async (
+  reflectee: string,
+  stored: IReflection,
+) => {
+  const conditions = { email: reflectee };
+  const updateReflectee = {
+    $push: { reflectionsReceived: stored._id },
+  };
+  const options = { new: true };
+
+  await User.findOneAndUpdate(conditions, updateReflectee, options);
+};
 
 /**
  * Takes an imgur response, and creates the corresponding Reflection doument
@@ -19,7 +37,7 @@ const client = new ImgurClient({ clientId });
  * @param reflector the person giving the reflection
  * @returns the new reflection, or an error if create() failed
  */
-const makeReflectionFromImgurResponse = (
+const makeReflectionFromImgurResponse = async (
   data: unknown,
   reflectee: string,
   reflector: string,
@@ -27,18 +45,24 @@ const makeReflectionFromImgurResponse = (
   const reflection = data as IReflection;
   const { type, title, description, deletehash, link, name } = reflection;
 
-  return Reflection.create({
-    type,
-    reflectee,
-    reflector,
-    title,
-    description,
-    deletehash,
-    link,
-    name,
-  })
-    .then((r) => r)
-    .catch((err) => new Error(err));
+  try {
+    const reflectionToStore = {
+      type,
+      reflectee,
+      reflector,
+      title,
+      description,
+      deletehash,
+      link,
+      name,
+    };
+
+    const stored = await Reflection.create(reflectionToStore);
+    await addNewReflectionToReflectee(reflectee, stored);
+    return stored;
+  } catch (e) {
+    throw new Error(`${e}`);
+  }
 };
 
 /**
