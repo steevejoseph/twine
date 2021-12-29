@@ -28,8 +28,8 @@ jobs:
     # Run the POSTMAN collection
     - name: Run POSTMAN collection
       run: |
-       newman run ./postman/twine.postman_collection.json -e ./postman/twine.postman_environment.json -r cli
-      #  newman run ./postman/twine.postman_collection.json -e ./postman/twine.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
+       newman run ./postman/twine.postman_collection.json -e ./postman/twine.postman_environment.json -r htmlextra,cli --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
+      #  newman run ./postman/twine.postman_collection.json -e ./postman/twine.postman_environment.json -r cli
 
     # Upload the contents of Test Results directory to workspace
     - name: Output the run Details
