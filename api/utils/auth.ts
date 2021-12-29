@@ -20,7 +20,6 @@ export const decodeTokenFromRequest = (req: Request): any => {
 
 export const getUserFromRequest = (req: Request) => {
   const decoded = decodeTokenFromRequest(req);
-  console.log(decoded);
   const user: IUser = decoded.user;
   return user;
 };

@@ -36,7 +36,6 @@ export const sendIntroEmailToUser = (user: IUser) => {
   };
   transporter.sendMail(mailOptions, (err, info) => {
     if (err) {
-      console.log(err);
       throw new Error(err.message);
     }
     return info;
