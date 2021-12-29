@@ -18,6 +18,7 @@ jobs:
       run: |
        npm install -g newman
        npm install -g newman-reporter-htmlextra
+       npm install -g newman-reporter-html
 
     # Make directory to upload the test results
     - name: Make Directory for results
@@ -27,7 +28,8 @@ jobs:
     # Run the POSTMAN collection
     - name: Run POSTMAN collection
       run: |
-       newman run ./postman/twine.postman_collection.json -e ./postman/twine.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
+       newman run ./postman/twine.postman_collection.json -e ./postman/twine.postman_environment.json -r json --reporter-json-export ./postman/jsonOutput/output.json
+      #  newman run ./postman/twine.postman_collection.json -e ./postman/twine.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
 
     # Upload the contents of Test Results directory to workspace
     - name: Output the run Details
