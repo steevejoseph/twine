@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
 import { IReflection } from './reflection';
+import { IRecommendation } from './recommendation';
 
 export enum SEX {
   MALE = 'male',
@@ -37,6 +38,9 @@ export interface IUser extends mongoose.Document {
   friends: string[];
   reflectionsReceived: IReflection[];
   reflectionsGiven: IReflection[];
+  incomingRecommendations: IRecommendation[]; // recommendations where the user is in the `to` field
+  outgoingRecommendations: IRecommendation[]; // recommendations where the user is in the `from` field
+  recommendationsMade: IRecommendation[]; // recommendations where the user is in the `by` field
   birthday: Date;
   type: USER_TYPE;
   isValidPassword(candidate: string): boolean;
@@ -77,6 +81,21 @@ export const UserSchema = new mongoose.Schema(
     reflectionsGiven: {
       type: [Schema.Types.ObjectId],
       ref: 'Reflection',
+      default: [],
+    },
+    incomingRecommendations: {
+      type: [Schema.Types.ObjectId],
+      ref: 'Recommendation',
+      default: [],
+    },
+    outgoingRecommendations: {
+      type: [Schema.Types.ObjectId],
+      ref: 'Recommendation',
+      default: [],
+    },
+    recommendationsMade: {
+      type: [Schema.Types.ObjectId],
+      ref: 'Recommendation',
       default: [],
     },
   },

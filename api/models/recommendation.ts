@@ -5,6 +5,7 @@ export interface IRecommendation extends mongoose.Document {
   to: string;
   by: string;
   cosigns: string[];
+  isMatch: boolean;
 }
 
 const RecommendationSchema = new mongoose.Schema({
@@ -22,6 +23,11 @@ const RecommendationSchema = new mongoose.Schema({
   },
   cosigns: {
     type: [String],
+    default: [],
+  },
+  isMatch: {
+    type: Boolean,
+    default: false,
   },
 });
 

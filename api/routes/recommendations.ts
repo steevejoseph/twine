@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import {
-  createRecommendation,
+  upsertRecommendation,
   getRecommendations,
 } from '../controllers/recommendations';
 
 const router = Router();
 
 router.get('/', getRecommendations);
-router.post('/', createRecommendation);
+router.post('/', upsertRecommendation);
 export default router;
