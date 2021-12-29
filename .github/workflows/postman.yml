@@ -28,7 +28,7 @@ jobs:
     # Run the POSTMAN collection
     - name: Run POSTMAN collection
       run: |
-       newman run ./postman/twine.postman_collection.json -e ./postman/twine.postman_environment.json -r json --reporter-json-export ./postman/jsonOutput/output.json
+       newman run ./postman/twine.postman_collection.json -e ./postman/twine.postman_environment.json -r cli
       #  newman run ./postman/twine.postman_collection.json -e ./postman/twine.postman_environment.json -r htmlextra --reporter-htmlextra-export testResults/htmlreport.html --reporter-htmlextra-darkTheme  > testResults/runreport1.html
 
     # Upload the contents of Test Results directory to workspace
