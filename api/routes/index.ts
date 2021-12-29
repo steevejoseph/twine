@@ -2,6 +2,7 @@ import { Router } from 'express';
 import passport from 'passport';
 import userRouter from './users';
 import reflectionsRouter from './reflections';
+import recommendationsRouter from './recommendations';
 import { login, performNewUserSignupActions } from '../controllers/users';
 
 const router = Router();
@@ -25,5 +26,6 @@ router.use(
 );
 
 router.use('/reflections', reflectionsRouter);
+router.use('/recommendations', recommendationsRouter);
 
 export default router;
